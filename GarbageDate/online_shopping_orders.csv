@@ -1,0 +1,11 @@
+order_id,customer_id,order_date,product_category,quantity,price,total
+1001,C001,2023-07-01,Electronics,2,500,1000
+1002,C002,2023-07-01,Books,3,20,60
+1003,C003,2023-07-02,Clothing,1,50,50
+1004,C001,2023-07-02,Electronics,1,800,800
+1005,C004,2023-07-03,Books,2,15,30
+1006,C002,2023-07-03,Clothing,4,30,120
+1007,C005,2023-07-04,Electronics,1,600,600
+1008,C003,2023-07-04,Books,2,25,50
+1009,C001,2023-07-05,Clothing,3,40,120
+1010,C004,2023-07-05,Electronics,1,700,700
