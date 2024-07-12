@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	h1 {
+		border: 1px solid black;
+		padding: 20px;
+		margin: 20px;
+	}
+
+	.one {
+		width: 100px;
+		height: 100px;
+		background-color: red;
+		margin: 10px;
+		padding: 10px;
+		border: 10px solid black;
+	}
+
+	.two {
+		box-sizing: border-box;
+		width: 100px;
+		height: 100px;
+		background-color: red;
+		margin: 10px;
+		padding: 10px;
+		border: 10px solid black;
+	}
+	.three {
+		width: 100px;
+		/* 하이트는 기본이 0잉다 그래서 포센트 사용시 부모에 사이즈 따른다*/
+		height: 100%;
+		background-color: green;
+	}
+</style>
+
+<body>
+	<!-- 마진과 마진은 마진 겹침 현상으로 병합이 됩니다.. -->
+	<h1>hello</h1>
+	<h1>hello</h1>
+	<h1>hello</h1>
+	<div class="one"></div>
+	<div class="two"><div class="three"></div></div>
+	<div class="three"></div>
+</body>
+
+</html>
