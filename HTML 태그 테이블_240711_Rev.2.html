@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HTML 태그 테이블</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			line-height: 1.6;
+			margin: 0;
+			padding: 20px;
+		}
+
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		th,
+		td {
+			border: 1px solid #ddd;
+			padding: 8px;
+			text-align: left;
+			white-space: nowrap;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+
+		.tag {
+			cursor: pointer;
+			color: #0066cc;
+		}
+
+		.tag:hover {
+			color: #004080;
+		}
+
+		#attributesModal {
+			display: none;
+			position: fixed;
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+
+		.modal-content {
+			background-color: #fefefe;
+			margin: 15% auto;
+			padding: 20px;
+			border: 1px solid #888;
+			width: 80%;
+			max-width: 600px;
+		}
+
+		.close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	<table>
+		<caption>HTML 태그 테이블</caption>
+		<thead>
+			<tr>
+				<th>Block</th>
+				<th>사용 상황</th>
+				<th>용법</th>
+				<th>Inline</th>
+				<th>사용 상황</th>
+				<th>용법</th>
+				<th>Inline-block</th>
+				<th>사용 상황</th>
+				<th>용법</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('div')">&lt;div&gt;</span></td>
+				<td>여러 요소를 그룹화하거나 레이아웃을 구성할 때</td>
+				<td>&lt;div&gt;내용&lt;/div&gt;</td>
+				<td><span class="tag" onclick="showAttributes('span')">&lt;span&gt;</span></td>
+				<td>텍스트의 일부를 묶어 스타일을 적용하거나 조작할 때</td>
+				<td>&lt;span&gt;텍스트&lt;/span&gt;</td>
+				<td><span class="tag" onclick="showAttributes('button')">&lt;button&gt;</span></td>
+				<td>사용자가 클릭할 수 있는 버튼을 만들 때</td>
+				<td>&lt;button&gt;클릭&lt;/button&gt;</td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('p')">&lt;p&gt;</span></td>
+				<td>일반 텍스트 단락을 나타낼 때</td>
+				<td>&lt;p&gt;문단 내용&lt;/p&gt;</td>
+				<td><span class="tag" onclick="showAttributes('a')">&lt;a&gt;</span></td>
+				<td>다른 페이지나 같은 페이지의 특정 부분으로 연결할 때</td>
+				<td>&lt;a href="url"&gt;링크&lt;/a&gt;</td>
+				<td><span class="tag" onclick="showAttributes('input')">&lt;input&gt;</span></td>
+				<td>사용자로부터 다양한 유형의 입력을 받을 때</td>
+				<td>&lt;input type="text"&gt;</td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('h1')">&lt;h1&gt;</span>-<span class="tag"
+						onclick="showAttributes('h6')">&lt;h6&gt;</span></td>
+				<td>페이지 구조를 나타내는 제목을 정의할 때</td>
+				<td>&lt;h1&gt;제목&lt;/h1&gt;</td>
+				<td><span class="tag" onclick="showAttributes('strong')">&lt;strong&gt;</span></td>
+				<td>텍스트를 강조하여 중요성을 나타낼 때</td>
+				<td>&lt;strong&gt;중요&lt;/strong&gt;</td>
+				<td><span class="tag" onclick="showAttributes('select')">&lt;select&gt;</span></td>
+				<td>드롭다운 선택 메뉴를 만들 때</td>
+				<td>&lt;select&gt;&lt;option&gt;옵션&lt;/option&gt;&lt;/select&gt;</td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('ul')">&lt;ul&gt;</span></td>
+				<td>순서가 없는 목록을 만들 때</td>
+				<td>&lt;ul&gt;&lt;li&gt;항목&lt;/li&gt;&lt;/ul&gt;</td>
+				<td><span class="tag" onclick="showAttributes('em')">&lt;em&gt;</span></td>
+				<td>텍스트에 강조 의미를 부여할 때</td>
+				<td>&lt;em&gt;강조&lt;/em&gt;</td>
+				<td><span class="tag" onclick="showAttributes('textarea')">&lt;textarea&gt;</span></td>
+				<td>여러 줄의 텍스트 입력이 필요할 때</td>
+				<td>&lt;textarea&gt;&lt;/textarea&gt;</td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('ol')">&lt;ol&gt;</span></td>
+				<td>순서가 있는 목록을 만들 때</td>
+				<td>&lt;ol&gt;&lt;li&gt;항목&lt;/li&gt;&lt;/ol&gt;</td>
+				<td><span class="tag" onclick="showAttributes('i')">&lt;i&gt;</span></td>
+				<td>기울임꼴로 텍스트를 표시하거나 아이콘을 나타낼 때</td>
+				<td>&lt;i&gt;기울임&lt;/i&gt;</td>
+				<td><span class="tag" onclick="showAttributes('img')">&lt;img&gt;</span></td>
+				<td>이미지를 웹 페이지에 삽입할 때</td>
+				<td>&lt;img src="image.jpg" alt="설명"&gt;</td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('table')">&lt;table&gt;</span></td>
+				<td>데이터를 행과 열로 구성된 표로 표시할 때</td>
+				<td>&lt;table&gt;&lt;tr&gt;&lt;td&gt;셀&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</td>
+				<td><span class="tag" onclick="showAttributes('b')">&lt;b&gt;</span></td>
+				<td>텍스트를 굵게 표시할 때 (시각적 강조)</td>
+				<td>&lt;b&gt;굵게&lt;/b&gt;</td>
+				<td><span class="tag" onclick="showAttributes('iframe')">&lt;iframe&gt;</span></td>
+				<td>다른 HTML 페이지를 현재 페이지에 삽입할 때</td>
+				<td>&lt;iframe src="url"&gt;&lt;/iframe&gt;</td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('style')">&lt;style&gt;</span></td>
+				<td>내부 CSS 스타일을 정의할 때 사용</td>
+				<td>&lt;style&gt;body { color: black; }&lt;/style&gt;</td>
+				<td><span class="tag" onclick="showAttributes('script')">&lt;script&gt;</span></td>
+				<td>JavaScript 코드를 포함하거나 외부 스크립트 파일을 연결할 때 사용</td>
+				<td>&lt;script src="script.js"&gt;&lt;/script&gt;</td>
+				<td><span class="tag" onclick="showAttributes('canvas')">&lt;canvas&gt;</span></td>
+				<td>그래픽을 그리기 위한 컨테이너로 사용</td>
+				<td>&lt;canvas id="myCanvas"&gt;&lt;/canvas&gt;</td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('video')">&lt;video&gt;</span></td>
+				<td>비디오 콘텐츠를 삽입할 때 사용</td>
+				<td>&lt;video src="video.mp4" controls&gt;&lt;/video&gt;</td>
+				<td><span class="tag" onclick="showAttributes('mark')">&lt;mark&gt;</span></td>
+				<td>텍스트를 하이라이트 할 때 사용</td>
+				<td>&lt;mark&gt;하이라이트된 텍스트&lt;/mark&gt;</td>
+				<td><span class="tag" onclick="showAttributes('progress')">&lt;progress&gt;</span></td>
+				<td>작업의 진행 상태를 나타낼 때 사용</td>
+				<td>&lt;progress value="70" max="100"&gt;&lt;/progress&gt;</td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('audio')">&lt;audio&gt;</span></td>
+				<td>오디오 콘텐츠를 삽입할 때 사용</td>
+				<td>&lt;audio src="audio.mp3" controls&gt;&lt;/audio&gt;</td>
+				<td><span class="tag" onclick="showAttributes('kbd')">&lt;kbd&gt;</span></td>
+				<td>키보드 입력을 나타낼 때 사용</td>
+				<td>Press &lt;kbd&gt;Ctrl&lt;/kbd&gt; + &lt;kbd&gt;C&lt;/kbd&gt; to copy</td>
+				<td><span class="tag" onclick="showAttributes('meter')">&lt;meter&gt;</span></td>
+				<td>알려진 범위 내의 스칼라 측정을 나타낼 때 사용</td>
+				<td>&lt;meter value="0.6"&gt;60%&lt;/meter&gt;</td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('details')">&lt;details&gt;</span></td>
+				<td>사용자가 열고 닫을 수 있는 추가 세부 정보를 제공할 때 사용</td>
+				<td>&lt;details&gt;&lt;summary&gt;제목&lt;/summary&gt;내용&lt;/details&gt;</td>
+				<td><span class="tag" onclick="showAttributes('ruby')">&lt;ruby&gt;</span></td>
+				<td>동아시아 문자의 발음을 표시할 때 사용</td>
+				<td>&lt;ruby&gt;漢&lt;rt&gt;かん&lt;/rt&gt;&lt;/ruby&gt;</td>
+				<td><span class="tag" onclick="showAttributes('output')">&lt;output&gt;</span></td>
+				<td>계산이나 사용자 액션의 결과를 표시할 때 사용</td>
+				<td>&lt;output name="result"&gt;계산 결과&lt;/output&gt;</td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('dialog')">&lt;dialog&gt;</span></td>
+				<td>대화 상자나 모달 윈도우를 생성할 때 사용</td>
+				<td>&lt;dialog open&gt;대화 상자 내용&lt;/dialog&gt;</td>
+				<td><span class="tag" onclick="showAttributes('datalist')">&lt;datalist&gt;</span></td>
+				<td>&lt;input&gt; 요소에 미리 정의된 옵션 목록을 제공할 때 사용</td>
+				<td>&lt;input list="browsers"&gt;&lt;datalist id="browsers"&gt;&lt;option
+					value="Chrome"&gt;&lt;/datalist&gt;</td>
+				<td><span class="tag" onclick="showAttributes('picture')">&lt;picture&gt;</span></td>
+				<td>반응형 이미지를 제공할 때 사용</td>
+				<td>&lt;picture&gt;&lt;source srcset="img.webp"&gt;&lt;img src="img.jpg"&gt;&lt;/picture&gt;</td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('template')">&lt;template&gt;</span></td>
+				<td>페이지 로드 시 렌더링되지 않는 HTML 콘텐츠를 정의할 때 사용</td>
+				<td>&lt;template&gt;&lt;p&gt;템플릿 내용&lt;/p&gt;&lt;/template&gt;</t>
+				<td><span class="tag" onclick="showAttributes('link')">&lt;link&gt;</span></td>
+				<td>외부 리소스(주로 CSS 파일)를 연결할 때 사용</td>
+				<td>&lt;link rel="stylesheet" href="styles.css"&gt;</td>
+				<td><span class="tag" onclick="showAttributes('svg')">&lt;svg&gt;</span></td>
+				<td>벡터 그래픽을 정의할 때 사용</td>
+				<td>&lt;svg&gt;&lt;circle cx="50" cy="50" r="40"/&gt;&lt;/svg&gt;</td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('form')">&lt;form&gt;</span></td>
+				<td>사용자로부터 입력을 받아 제출하는 양식을 만들 때</td>
+				<td>&lt;form&gt;폼 내용&lt;/form&gt;</td>
+				<td><span class="tag" onclick="showAttributes('small')">&lt;small&gt;</span></td>
+				<td>작은 글씨로 부가 정보나 저작권 정보를 표시할 때</td>
+				<td>&lt;small&gt;작은 글씨&lt;/small&gt;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('section')">&lt;section&gt;</span></td>
+				<td>문서의 독립적인 섹션을 정의할 때</td>
+				<td>&lt;section&gt;섹션 내용&lt;/section&gt;</td>
+				<td><span class="tag" onclick="showAttributes('code')">&lt;code&gt;</span></td>
+				<td>컴퓨터 코드를 인라인으로 표시할 때</td>
+				<td>&lt;code&gt;코드&lt;/code&gt;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('article')">&lt;article&gt;</span></td>
+				<td>독립적으로 구분되거나 재사용 가능한 콘텐츠를 정의할 때</td>
+				<td>&lt;article&gt;기사 내용&lt;/article&gt;</td>
+				<td><span class="tag" onclick="showAttributes('cite')">&lt;cite&gt;</span></td>
+				<td>저작물의 제목을 참조할 때</td>
+				<td>&lt;cite&gt;출처&lt;/cite&gt;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('header')">&lt;header&gt;</span></td>
+				<td>페이지나 섹션의 헤더 영역을 정의할 때</td>
+				<td>&lt;header&gt;헤더 내용&lt;/header&gt;</td>
+				<td><span class="tag" onclick="showAttributes('sub')">&lt;sub&gt;</span></td>
+				<td>아래 첨자를 표시할 때 (예: 화학식)</td>
+				<td>H&lt;sub&gt;2&lt;/sub&gt;O</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('footer')">&lt;footer&gt;</span></td>
+				<td>페이지나 섹션의 푸터 영역을 정의할 때</td>
+				<td>&lt;footer&gt;푸터 내용&lt;/footer&gt;</td>
+				<td><span class="tag" onclick="showAttributes('sup')">&lt;sup&gt;</span></td>
+				<td>위 첨자를 표시할 때 (예: 각주, 지수)</td>
+				<td>x&lt;sup&gt;2&lt;/sup&gt;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('nav')">&lt;nav&gt;</span></td>
+				<td>주요 네비게이션 링크를 포함하는 영역을 정의할 때</td>
+				<td>&lt;nav&gt;메뉴 항목&lt;/nav&gt;</td>
+				<td><span class="tag" onclick="showAttributes('label')">&lt;label&gt;</span></td>
+				<td>폼 요소에 레이블을 붙일 때</td>
+				<td>&lt;label for="id"&gt;레이블&lt;/label&gt;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('aside')">&lt;aside&gt;</span></td>
+				<td>페이지의 주요 내용과 간접적으로 연관된 내용을 표시할 때</td>
+				<td>&lt;aside&gt;관련 내용&lt;/aside&gt;</td>
+				<td><span class="tag" onclick="showAttributes('q')">&lt;q&gt;</span></td>
+				<td>짧은 인라인 인용구를 표시할 때</td>
+				<td>&lt;q&gt;인용&lt;/q&gt;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('main')">&lt;main&gt;</span></td>
+				<td>문서의 주요 콘텐츠를 정의할 때</td>
+				<td>&lt;main&gt;주요 내용&lt;/main&gt;</td>
+				<td><span class="tag" onclick="showAttributes('abbr')">&lt;abbr&gt;</span></td>
+				<td>약어나 두문자어를 표시할 때</td>
+				<td>&lt;abbr title="설명"&gt;약어&lt;/abbr&gt;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('figure')">&lt;figure&gt;</span></td>
+				<td>이미지, 도표 등 독립적인 콘텐츠를 그룹화할 때</td>
+				<td>&lt;figure&gt;&lt;img&gt;&lt;figcaption&gt;설명&lt;/figcaption&gt;&lt;/figure&gt;</td>
+				<td><span class="tag" onclick="showAttributes('data')">&lt;data&gt;</span></td>
+				<td>내용과 기계가 읽을 수 있는 값을 연결할 때</td>
+				<td>&lt;data value="값"&gt;표시 텍스트&lt;/data&gt;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('blockquote')">&lt;blockquote&gt;</span></td>
+				<td>다른 출처로부터의 긴 인용구를 표시할 때</td>
+				<td>&lt;blockquote&gt;인용문&lt;/blockquote&gt;</td>
+				<td><span class="tag" onclick="showAttributes('time')">&lt;time&gt;</span></td>
+				<td>날짜나 시간을 기계가 읽을 수 있는 형식으로 표시할 때</td>
+				<td>&lt;time datetime="2023-05-15"&gt;5월 15일&lt;/time&gt;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('pre')">&lt;pre&gt;</span></td>
+				<td>형식이 미리 지정된 텍스트를 그대로 표시할 때</td>
+				<td>&lt;pre&gt; 서식이 유지된 텍스트 &lt;/pre&gt;</td>
+				<td><span class="tag" onclick="showAttributes('var')">&lt;var&gt;</span></td>
+				<td>수학 표현식이나 프로그래밍 문맥에서 변수를 나타낼 때</td>
+				<td>&lt;var&gt;x&lt;/var&gt;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('hr')">&lt;hr&gt;</span></td>
+				<td>주제의 분리를 나타내는 수평선을 삽입할 때</td>
+				<td>&lt;hr&gt;</td>
+				<td><span class="tag" onclick="showAttributes('br')">&lt;br&gt;</span></td>
+				<td>텍스트 내에서 강제로 줄바꿈을 할 때</td>
+				<td>텍스트&lt;br&gt;다음 줄</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><span class="tag" onclick="showAttributes('meta')">&lt;meta&gt;</span></td>
+				<td>문서에 대한 메타데이터를 정의할 때 사용</td>
+				<td>&lt;meta charset="UTF-8"&gt;</td>
+				<td><span class="tag" onclick="showAttributes('wbr')">&lt;wbr&gt;</span></td>
+				<td>긴 단어나 URL에서 줄바꿈 위치를 제안할 때</td>
+				<td>긴단어&lt;wbr&gt;계속</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div id="attributesModal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<h2 id="modalTitle"></h2>
+			<div id="modalContent"></div>
+		</div>
+	</div>
+
+	<script>
+		const tagAttributes = {
+			'div': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'title': '요소에 대한 추가 정보',
+				'lang': '요소 내용의 언어',
+				'dir': '텍스트 방향',
+				'onclick': '클릭 시 실행할 JavaScript',
+				'onmouseover': '마우스 오버 시 실행할 JavaScript',
+				'onmouseout': '마우스 아웃 시 실행할 JavaScript'
+			},
+			'span': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'title': '요소에 대한 추가 정보',
+				'lang': '요소 내용의 언어',
+				'dir': '텍스트 방향',
+				'onclick': '클릭 시 실행할 JavaScript',
+				'onmouseover': '마우스 오버 시 실행할 JavaScript',
+				'onmouseout': '마우스 아웃 시 실행할 JavaScript'
+			},
+			'button': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'type': '버튼의 유형 (submit, reset, button)',
+				'name': '버튼의 이름',
+				'value': '버튼의 초기 값',
+				'disabled': '버튼을 비활성화',
+				'onclick': '클릭 시 실행할 JavaScript',
+				'onmouseover': '마우스 오버 시 실행할 JavaScript',
+				'onmouseout': '마우스 아웃 시 실행할 JavaScript'
+			},
+			'p': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'title': '요소에 대한 추가 정보',
+				'lang': '요소 내용의 언어',
+				'dir': '텍스트 방향'
+			},
+			'a': {
+				'href': '링크의 대상 URL',
+				'target': '링크를 열 위치',
+				'rel': '현재 문서와 링크된 문서 사이의 관계',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'title': '요소에 대한 추가 정보',
+				'download': '링크된 리소스를 다운로드하도록 지정'
+			},
+			'input': {
+				'type': '입력 필드의 유형',
+				'name': '입력 필드의 이름',
+				'value': '입력 필드의 초기 값',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'placeholder': '입력 필드의 힌트',
+				'required': '필수 입력 필드로 지정',
+				'disabled': '입력 필드를 비활성화'
+			},
+			'h1': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'title': '요소에 대한 추가 정보'
+			},
+			// h2부터 h6까지 동일한 속성을 가지므로 생략
+			'strong': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'title': '요소에 대한 추가 정보'
+			},
+			'select': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'name': '선택 메뉴의 이름',
+				'multiple': '다중 선택 허용',
+				'required': '필수 선택 항목으로 지정',
+				'disabled': '선택 메뉴를 비활성화'
+			},
+			'ul': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'type': '목록 항목 마커의 유형'
+			},
+			'ol': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'type': '번호 매기기 유형',
+				'start': '시작 값',
+				'reversed': '역순 번호 매기기'
+			},
+			'li': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'value': '항목의 순서 값'
+			},
+			'em': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'title': '요소에 대한 추가 정보'
+			},
+			'textarea': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'name': '텍스트 영역의 이름',
+				'rows': '텍스트 영역의 표시 행 수',
+				'cols': '텍스트 영역의 표시 열 수',
+				'placeholder': '텍스트 영역의 힌트',
+				'required': '필수 입력 필드로 지정',
+				'disabled': '텍스트 영역을 비활성화'
+			},
+			'i': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'title': '요소에 대한 추가 정보'
+			},
+			'img': {
+				'src': '이미지의 URL',
+				'alt': '이미지의 대체 텍스트',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'width': '이미지의 너비',
+				'height': '이미지의 높이',
+				'title': '이미지에 대한 추가 정보'
+			},
+			'table': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'border': '테이블 테두리의 두께'
+			},
+			'tr': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'td': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'colspan': '열 병합',
+				'rowspan': '행 병합'
+			},
+			'b': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'title': '요소에 대한 추가 정보'
+			},
+			'iframe': {
+				'src': '프레임에 표시할 문서의 URL',
+				'width': '프레임의 너비',
+				'height': '프레임의 높이',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'name': '프레임의 이름',
+				'sandbox': '보안을 위한 제한 사항'
+			},
+			'style': {
+				'type': '스타일 정보의 MIME 유형',
+				'media': '스타일을 적용할 미디어'
+			},
+			'script': {
+				'src': '외부 스크립트 파일의 URL',
+				'type': '스크립트의 MIME 유형',
+				'async': '스크립트를 비동기적으로 실행',
+				'defer': '문서 파싱 후 스크립트 실행'
+			},
+			'canvas': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'width': '캔버스의 너비',
+				'height': '캔버스의 높이'
+			},
+			'video': {
+				'src': '비디오 파일의 URL',
+				'controls': '비디오 제어 기능 표시',
+				'width': '비디오 플레이어의 너비',
+				'height': '비디오 플레이어의 높이',
+				'autoplay': '자동 재생',
+				'loop': '반복 재생',
+				'muted': '음소거',
+				'poster': '비디오 썸네일 이미지의 URL'
+			},
+			'audio': {
+				'src': '오디오 파일의 URL',
+				'controls': '오디오 제어 기능 표시',
+				'autoplay': '자동 재생',
+				'loop': '반복 재생',
+				'muted': '음소거'
+			},
+			'mark': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'progress': {
+				'value': '현재 진행 상태',
+				'max': '작업의 총량',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'meter': {
+				'value': '현재 값',
+				'min': '최소값',
+				'max': '최대값',
+				'low': '낮은 값의 범위',
+				'high': '높은 값의 범위',
+				'optimum': '최적값',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'details': {
+				'open': '세부 정보를 기본적으로 표시',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'summary': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'dialog': {
+				'open': '대화 상자를 기본적으로 표시',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'datalist': {
+				'id': '요소의 고유 식별자'
+			},
+			'option': {
+				'value': '옵션의 값',
+				'selected': '기본 선택된 옵션으로 지정',
+				'disabled': '옵션을 비활성화'
+			},
+			'output': {
+				'for': '출력과 관련된 요소의 ID',
+				'form': '출력이 속한 폼의 ID',
+				'name': '출력의 이름',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'picture': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'template': {
+				'id': '요소의 고유 식별자'
+			},
+			'time': {
+				'datetime': 'ISO 8601 형식의 날짜/시간',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'kbd': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'samp': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'var': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'ruby': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'rt': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'rp': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'bdi': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'bdo': {
+				'dir': '텍스트 방향',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'wbr': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'embed': {
+				'src': '임베드할 외부 콘텐츠의 URL',
+				'type': '임베드된 콘텐츠의 MIME 유형',
+				'width': '임베드된 콘텐츠의 너비',
+				'height': '임베드된 콘텐츠의 높이',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'object': {
+				'data': '임베드할 리소스의 URL',
+				'type': '임베드된 객체의 MIME 유형',
+				'width': '객체의 너비',
+				'height': '객체의 높이',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'param': {
+				'name': '매개변수의 이름',
+				'value': '매개변수의 값'
+			},
+			'track': {
+				'kind': '트랙의 종류',
+				'src': '트랙 파일의 URL',
+				'srclang': '트랙의 언어',
+				'label': '사용자가 읽을 수 있는 트랙 제목',
+				'default': '기본 트랙으로 지정'
+			},
+			'map': {
+				'name': '이미지 맵의 이름',
+				'id': '요소의 고유 식별자'
+			},
+			'area': {
+				'shape': '영역의 모양',
+				'coords': '영역의 좌표',
+				'href': '링크의 대상 URL',
+				'alt': '대체 텍스트',
+				'target': '링크를 열 위치'
+			},
+			'col': {
+				'span': '열이 차지하는 칸 수',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'colgroup': {
+				'span': '그룹이 차지하는 열 수',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'caption': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'tfoot': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'thead': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'tbody': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'optgroup': {
+				'label': '옵션 그룹의 이름',
+				'disabled': '옵션 그룹을 비활성화'
+			},
+			'fieldset': {
+				'name': '필드셋의 이름',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일',
+				'disabled': '필드셋을 비활성화'
+			},
+			'legend': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'label': {
+				'for': '레이블과 연관된 폼 요소의 ID',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'form': {
+				'action': '폼 데이터를 보낼 URL',
+				'method': 'HTTP 요청 메소드',
+				'enctype': '폼 데이터의 인코딩 타입',
+				'name': '폼의 이름',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'small': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'cite': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'dfn': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'abbr': {
+				'title': '약어의 전체 설명',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'code': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'pre': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'blockquote': {
+				'cite': '인용의 출처 URL',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'q': {
+				'cite': '인용의 출처 URL',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'ins': {
+				'cite': '변경 이유를 설명하는 문서의 URL',
+				'datetime': '변경 날짜와 시간',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'del': {
+				'cite': '변경 이유를 설명하는 문서의 URL',
+				'datetime': '변경 날짜와 시간',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'sub': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'sup': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'header': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'footer': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'main': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'section': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'article': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'aside': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'data': {
+				'value': '콘텐츠의 기계 판독 가능한 변환',
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'meta': {
+				'name': '메타데이터의 이름',
+				'content': '메타데이터의 값',
+				'charset': '문자 인코딩',
+				'http-equiv': 'HTTP 헤더에 대한 프라그마 지시문'
+			},
+			'link': {
+				'href': '연결된 리소스의 URL',
+				'rel': '현재 문서와 연결된 문서의 관계',
+				'type': '연결된 리소스의 MIME 유형',
+				'media': '리소스가 적용될 미디어 유형'
+			},
+			'noscript': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'hr': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'br': [],
+			'source': {
+				'src': '미디어 리소스의 URL',
+				'type': '리소스의 MIME 유형',
+				'srcset': '다양한 화면 크기에 대한 이미지 URL 목록',
+				'sizes': '소스 크기 값',
+				'media': '리소스가 적용될 미디어 쿼리'
+			},
+			'figure': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'figcaption': {
+				'id': '요소의 고유 식별자',
+				'class': '요소의 하나 이상의 클래스 이름',
+				'style': '요소의 인라인 CSS 스타일'
+			},
+			'svg': {
+				'width': 'SVG 뷰포트의 너비',
+				'height': 'SVG 뷰포트의 높이',
+				'viewBox': 'SVG 뷰포트의 좌표',
+				'xmlns': 'SVG 네임스페이스'
+			}
+		};
+
+		function showAttributes(tag) {
+			const modal = document.getElementById('attributesModal');
+			const modalTitle = document.getElementById('modalTitle');
+			const modalContent = document.getElementById('modalContent');
+
+			modalTitle.textContent = `<${tag}> 태그의 속성`;
+
+			const attributes = tagAttributes[tag];
+			if (attributes && Object.keys(attributes).length > 0) {
+				const attrList = Object.entries(attributes).map(([attr, desc]) =>
+					`<li><strong>${attr}</strong>: ${desc}</li>`
+				).join('');
+				modalContent.innerHTML = `<ul>${attrList}</ul>`;
+			} else {
+				modalContent.innerHTML = '<p>이 태그에 대한 속성 정보가 없습니다.</p>';
+			}
+
+			modal.style.display = 'block';
+		}
+
+		const modal = document.getElementById('attributesModal');
+		const span = document.getElementsByClassName('close')[0];
+
+		span.onclick = function () {
+			modal.style.display = 'none';
+		}
+
+		window.onclick = function (event) {
+			if (event.target == modal) {
+				modal.style.display = 'none';
+			}
+		}
+	</script>
+</body>
+
+</html>
