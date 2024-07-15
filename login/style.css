@@ -1,0 +1,42 @@
+article {
+    width: 350px;
+	height: 140px;
+    padding: 18px 15px 17px;
+    font-size: 12px;
+    line-height: 15px;
+    border: 1px solid #DBDBDB;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.link-login {
+    display: block;
+    margin: 16px 0;
+    background-color: #711BFF;
+    padding: 14px 0 11px;
+    width: 318px;
+    /* height: 40px; */
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.link-login img {
+    margin-right: 4px;
+    vertical-align: -4px;
+}
+
+.img-lock,
+.img-user {
+    width: 16px;
+    height: 16px;
+    vertical-align: -3px;
+}
+
+.img-user {
+    margin-left: 105px;
+}
+.img-weniv {
+	width: 64px;
+	height: 18px;
+}

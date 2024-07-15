@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+</head>
+<style>
+  /* div {
+    width: 200px;
+    border: 2px solid black;
+  }
+
+  .relative-box {
+    position: relative;
+    left: 10px;
+    top: 10px;
+    border: 2px solid red;
+  } */
+
+  .container {
+    position: relative;
+    height: 100px;
+    border: 2px solid black;
+  }
+
+  .absolute-box {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid blue;
+    padding: 5px;
+  }
+  section {
+            height: 1000px;
+            border: 3px solid black;
+        }
+
+        h2 {
+            position: -webkit-sticky;
+            position: sticky;
+            bottom: 0px;
+            background: greenyellow;
+            margin: 0;
+        }
+</style>
+
+<body>
+  
+  <section>
+    <h2>오늘의 메뉴1</h2>
+    <ul>
+      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur praesentium qui, tempore quisquam impedit iure quae vero tempora maiores optio eos quidem, dolorum ex, provident dolore. Autem nesciunt corporis libero?</li>
+      <li>Voluptate commodi minus vero iste cupiditate libero natus suscipit nesciunt eos necessitatibus sequi enim laudantium beatae nostrum aut itaque magnam eius a perspiciatis, doloremque ipsam cumque recusandae dignissimos quam! Quasi.</li>
+      <li>Cumque accusantium porro sit? Architecto quo ex modi, in quam neque tempora labore totam mollitia sunt cum doloremque similique assumenda iure culpa aspernatur corporis, sed recusandae. Expedita, labore! Eaque, eos!</li>
+    </ul>
+  </section>
+  <section>
+    <h2>오늘의 메뉴2</h2>
+    <ul>
+      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt alias ipsam repellendus distinctio laborum suscipit placeat molestias nulla velit obcaecati quia voluptatum sapiente, numquam, veniam necessitatibus voluptates autem! Molestias, maxime?</li>
+      <li>Molestiae consequuntur, ipsa sit, magni cum tenetur itaque a non assumenda, hic culpa vel recusandae perspiciatis inventore earum officia accusamus alias ex eum consectetur! Nulla aspernatur natus deleniti voluptates alias.</li>
+      <li>Nam ad quaerat dolore facilis necessitatibus unde sequi, iure, repellat odio adipisci quo. Hic quasi sint rem sit perferendis sunt nam eligendi quidem ipsum? Vero quos quae suscipit maiores aperiam?</li>
+    </ul>
+  </section>
+  <section>
+    <h2>오늘의 메뉴3</h2>
+    <ul>
+      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, suscipit ipsa! Aliquam temporibus sunt alias accusantium odio mollitia cupiditate facilis necessitatibus sapiente a? Veritatis voluptatibus at tenetur quis exercitationem impedit.</li>
+      <li>Natus nihil inventore nemo velit? Sapiente commodi, placeat reiciendis ipsam fugit aperiam ea officia odit quibusdam unde eaque voluptates veritatis nihil? Ipsa veritatis rerum explicabo at amet ipsam sunt placeat!</li>
+      <li>Eius enim, earum voluptate ducimus hic velit nostrum ex, deserunt reprehenderit suscipit debitis neque libero dolorem tempora reiciendis, veritatis numquam quidem quia id voluptas ipsa? Libero vitae illo dicta ab.</li>
+    </ul>
+  </section>
+  <div>hello world</div>
+  <div class="relative-box">이 요소는 relative입니다.</div>
+  <div>hello world</div>
+  <div class="container">
+    <div class="absolute-box">이 요소는 absolute입니다.</div>
+  </div>
+</body>
+</html>
