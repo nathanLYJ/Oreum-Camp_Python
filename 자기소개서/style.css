@@ -162,11 +162,14 @@ hr {
 }
 .skill-info {
 	
-	display: inline-block;
+	display: flex;
+    justify-content:center;
+    flex-basis: 0%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 5px;
 	background-color: #4b7c71;
 	color: white;
-	padding: 2px 11px;
-	margin: 4px;
 	border-radius: 20px;
 	font-size: 14px;
 	font-weight: normal;
