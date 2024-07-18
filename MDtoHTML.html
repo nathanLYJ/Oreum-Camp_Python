@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마크다운 to HTML 변환기 (코드 보기 포함)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        textarea, pre { width: 100%; height: 200px; margin-bottom: 10px; }
+        #output, #htmlOutput { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
+        pre { background-color: #f4f4f4; overflow: auto; }
+    </style>
+</head>
+<body>
+    <h1>마크다운 to HTML 변환기 (코드 보기 포함)</h1>
+    <textarea id="markdown" placeholder="여기에 마크다운을 입력하세요..."></textarea>
+    <button onclick="convertToHtml()">변환</button>
+    <h2>렌더링된 HTML:</h2>
+    <div id="output"></div>
+    <h2>HTML 코드:</h2>
+    <pre id="htmlOutput"></pre>
+
+    <script>
+        function convertToHtml() {
+            const markdown = document.getElementById('markdown').value;
+            const html = marked(markdown);
+            document.getElementById('output').innerHTML = html;
+            document.getElementById('htmlOutput').textContent = html;
+        }
+    </script>
+</body>
+</html>
