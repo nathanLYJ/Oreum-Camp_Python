@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>개선된 번개 피하기 게임 - 다중 번개</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      canvas {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+
+      const player = {
+        y: canvas.height - 50,
+        width: 30,
+        height: 30,
+        speed: 30,
+        translateX: 0, // 새로 추가된 속성
+      };
+
+      class Lightning {
+        constructor() {
+          this.x = Math.random() * (canvas.width - 20);
+          this.y = -40;
+          this.width = 20;
+          this.height = 40;
+          this.speed = 5;
+        }
+
+        draw() {
+          // 테두리 그리기
+          ctx.strokeStyle = "black"; // 테두리 색상
+          ctx.lineWidth = 5; // 테두리 두께
+          this.drawLightningPath();
+
+          // 번개 내부 그리기
+          ctx.strokeStyle = "yellow";
+          ctx.lineWidth = 3;
+          this.drawLightningPath();
+        }
+
+        drawLightningPath() {
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y);
+          for (let i = 0; i < 3; i++) {
+            ctx.lineTo(
+              this.x + (i % 2 === 0 ? 10 : -10),
+              this.y + ((i + 1) * this.height) / 3
+            );
+          }
+          ctx.stroke();
+        }
+
+        move() {
+          this.y += this.speed;
+        }
+      }
+
+      let lightnings = [];
+      let score = 0;
+      let gameOver = false;
+
+      function drawPlayer() {
+        ctx.save(); // 현재 컨텍스트 상태 저장
+        ctx.translate(player.translateX, 0); // X축으로만 이동
+        ctx.fillStyle = "blue";
+        ctx.fillRect(
+          canvas.width / 2 - player.width / 2,
+          player.y,
+          player.width,
+          player.height
+        );
+        ctx.restore(); // 컨텍스트 상태 복원
+      }
+
+      function checkCollision(lightning) {
+        const lightningPath = [
+          { x: lightning.x, y: lightning.y },
+          { x: lightning.x + 10, y: lightning.y + lightning.height / 3 },
+          { x: lightning.x - 10, y: lightning.y + (2 * lightning.height) / 3 },
+          { x: lightning.x, y: lightning.y + lightning.height },
+        ];
+
+        const playerCenterX = canvas.width / 2 + player.translateX;
+        const playerX = playerCenterX - player.width / 2;
+
+        for (let i = 0; i < lightningPath.length - 1; i++) {
+          if (
+            lineRectCollision(
+              lightningPath[i].x,
+              lightningPath[i].y,
+              lightningPath[i + 1].x,
+              lightningPath[i + 1].y,
+              playerX,
+              player.y,
+              player.width,
+              player.height
+            )
+          ) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      function lineRectCollision(x1, y1, x2, y2, rx, ry, rw, rh) {
+        return (
+          lineLineCollision(x1, y1, x2, y2, rx, ry, rx + rw, ry) ||
+          lineLineCollision(x1, y1, x2, y2, rx + rw, ry, rx + rw, ry + rh) ||
+          lineLineCollision(x1, y1, x2, y2, rx + rw, ry + rh, rx, ry + rh) ||
+          lineLineCollision(x1, y1, x2, y2, rx, ry + rh, rx, ry)
+        );
+      }
+
+      function lineLineCollision(x1, y1, x2, y2, x3, y3, x4, y4) {
+        const den = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+        if (den == 0) return false;
+        const ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / den;
+        const ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / den;
+        return ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1;
+      }
+
+      function drawScore() {
+        ctx.fillStyle = "black";
+        ctx.font = "20px Arial";
+        ctx.fillText(`점수: ${score}`, 10, 30);
+      }
+
+      function gameLoop() {
+        if (gameOver) {
+          ctx.fillStyle = "black";
+          ctx.font = "30px Arial";
+          ctx.fillText("게임 오버!", canvas.width / 2 - 70, canvas.height / 2);
+          return;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        drawPlayer();
+
+        lightnings.forEach((lightning, index) => {
+          lightning.draw();
+          lightning.move();
+
+          if (checkCollision(lightning)) {
+            gameOver = true;
+          }
+
+          if (lightning.y > canvas.height) {
+            lightnings.splice(index, 1);
+            score++;
+          }
+        });
+
+        drawScore();
+
+        requestAnimationFrame(gameLoop);
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") {
+          player.translateX = Math.max(
+            player.translateX - player.speed,
+            -canvas.width / 2 + player.width / 2
+          );
+        } else if (e.key === "ArrowRight") {
+          player.translateX = Math.min(
+            player.translateX + player.speed,
+            canvas.width / 2 - player.width / 2
+          );
+        }
+      });
+
+      function addLightning() {
+        lightnings.push(new Lightning());
+      }
+
+      setInterval(addLightning, 1000);
+
+      gameLoop();
+    </script>
+  </body>
+</html>

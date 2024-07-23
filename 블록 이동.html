@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>방향키로 블록 이동하기</title>
+    <style>
+      .target {
+        width: 50px;
+        height: 50px;
+        background-color: red;
+        position: absolute;
+        transition: all 0.1s;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="target"></div>
+
+    <script>
+      // 화살표 키를 눌렀을 때, 왼쪽 화살표를 누르면 상자를 왼쪽으로, 오른쪽 화살표를 누르면 상자를 왼쪽으로 이동합니다.
+      const target = document.querySelector(".target");
+      let pos = 0;
+
+      function move(event) {
+        const keyName = event.key;
+        console.log(keyName);
+        if (keyName === "ArrowRight") {
+          pos += 5;
+          target.style.transform = `translateX(${pos}px)`;
+        } else if (keyName === "ArrowLeft") {
+          pos -= 5;
+          target.style.transform = `translateX(${pos}px)`;
+        }
+      }
+
+      document.addEventListener("keydown", move);
+    </script>
+  </body>
+</html>

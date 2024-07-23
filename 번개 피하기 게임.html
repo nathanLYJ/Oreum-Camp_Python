@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>번개 피하기 게임 - 하이브리드 버전</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(248, 246, 225);
+      }
+      #gameContainer {
+        position: relative;
+        width: 800px;
+        height: 800px;
+      }
+      #gameCanvas {
+        position: absolute;
+        width: 800px;
+        height: 800px;
+        top: 0;
+        left: 0;
+        border: 2px solid black;
+      }
+      #ui {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-family: Arial, sans-serif;
+      }
+      #score {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+      #startButton {
+        font-size: 16px;
+        padding: 5px 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gameContainer">
+      <canvas id="gameCanvas"></canvas>
+      <div id="ui">
+        <div id="score">점수: 0</div>
+        <button id="startButton">게임 시작</button>
+      </div>
+    </div>
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+      const scoreElement = document.getElementById("score");
+      const startButton = document.getElementById("startButton");
+
+      canvas.width = 800;
+      canvas.height = 800;
+
+      let score = 0;
+      let isGameRunning = false;
+
+      const player = {
+        x: canvas.width / 2,
+        y: canvas.height - 50,
+        width: 50,
+        height: 50,
+        speed: 20,
+      };
+
+      let lightnings = [];
+
+      function drawPlayer() {
+        ctx.fillStyle = "blue";
+        ctx.fillRect(
+          player.x - player.width / 2,
+          player.y - player.height / 2,
+          player.width,
+          player.height
+        );
+      }
+
+      function drawLightnings() {
+        for (let lightning of lightnings) {
+          // 번개의 경로 생성
+          let path = [];
+          path.push({ x: lightning.x, y: lightning.y });
+
+          let offsetX = 0;
+          for (let i = 1; i <= 3; i++) {
+            offsetX = (Math.random() - 0.5) * 20;
+            path.push({
+              x: lightning.x + offsetX,
+              y: lightning.y + (i * 30) / 3,
+            });
+          }
+
+          // 테두리 그리기
+          ctx.beginPath();
+          ctx.moveTo(path[0].x, path[0].y);
+          for (let i = 1; i < path.length; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
+          }
+          ctx.strokeStyle = "rgba(0, 0, 0, 0.8)";
+          ctx.lineWidth = 5;
+          ctx.stroke();
+
+          // 번개 내부 그리기
+          ctx.beginPath();
+          ctx.moveTo(path[0].x, path[0].y);
+          for (let i = 1; i < path.length; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
+          }
+          ctx.strokeStyle = "yellow";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+      }
+
+      function updateGame() {
+        // 번개 이동
+        for (let i = lightnings.length - 1; i >= 0; i--) {
+          lightnings[i].y += 5;
+          if (lightnings[i].y > canvas.height) {
+            lightnings.splice(i, 1);
+            score++;
+            updateScore();
+          }
+        }
+
+        // 충돌 체크
+        for (let lightning of lightnings) {
+          if (
+            player.x - player.width / 2 < lightning.x + 10 &&
+            player.x + player.width / 2 > lightning.x - 10 &&
+            player.y - player.height / 2 < lightning.y + 30 &&
+            player.y + player.height / 2 > lightning.y
+          ) {
+            gameOver();
+          }
+        }
+
+        // 새 번개 생성
+        if (Math.random() < 0.02) {
+          lightnings.push({ x: Math.random() * (canvas.width - 10), y: 0 });
+        }
+      }
+
+      function gameLoop() {
+        if (!isGameRunning) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        drawPlayer();
+        drawLightnings();
+        updateGame();
+
+        requestAnimationFrame(gameLoop);
+      }
+
+      function updateScore() {
+        scoreElement.textContent = `점수: ${score}`;
+      }
+
+      function gameOver() {
+        isGameRunning = false;
+        alert(`게임 오버! 최종 점수: ${score}`);
+        startButton.textContent = "다시 시작";
+      }
+
+      startButton.addEventListener("click", () => {
+        score = 0;
+        updateScore();
+        lightnings = [];
+        player.x = canvas.width / 2;
+        isGameRunning = true;
+        gameLoop();
+        startButton.textContent = "게임 중";
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (!isGameRunning) return;
+
+        if (e.key === "ArrowLeft" && player.x > player.width / 2) {
+          player.x -= player.speed;
+        } else if (
+          e.key === "ArrowRight" &&
+          player.x < canvas.width - player.width / 2
+        ) {
+          player.x += player.speed;
+        }
+      });
+
+      updateScore();
+    </script>
+  </body>
+</html>

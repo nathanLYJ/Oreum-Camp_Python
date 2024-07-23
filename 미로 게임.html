@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>벽이 있는 미로 탈출 게임</title>
+    <style>
+      #gameArea {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        border: 2px solid black;
+        background-color: white;
+      }
+      #player {
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        position: absolute;
+        transition: all 0.1s;
+        z-index: 2;
+      }
+      .wall {
+        position: absolute;
+        background-color: #333;
+        z-index: 1;
+      }
+      #goal {
+        width: 20px;
+        height: 20px;
+        background-color: green;
+        position: absolute;
+        z-index: 2;
+      }
+      #level {
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gameArea">
+      <div id="player"></div>
+      <div id="goal"></div>
+    </div>
+    <div id="level">레벨: 1</div>
+
+    <script>
+      const gameArea = document.getElementById("gameArea");
+      const player = document.getElementById("player");
+      const goal = document.getElementById("goal");
+      const levelDisplay = document.getElementById("level");
+      let playerX = 20;
+      let playerY = 20;
+      const step = 20;
+      const mazeSize = 15;
+      let maze = [];
+      let level = 1;
+
+      function generateMaze() {
+        maze = Array(mazeSize)
+          .fill()
+          .map(() => Array(mazeSize).fill(1));
+
+        const stack = [[1, 1]];
+        maze[1][1] = 0;
+
+        while (stack.length > 0) {
+          const [x, y] = stack.pop();
+          const directions = [
+            [0, 2],
+            [2, 0],
+            [0, -2],
+            [-2, 0],
+          ];
+          shuffleArray(directions);
+
+          for (let [dx, dy] of directions) {
+            const nx = x + dx,
+              ny = y + dy;
+            if (
+              nx > 0 &&
+              nx < mazeSize - 1 &&
+              ny > 0 &&
+              ny < mazeSize - 1 &&
+              maze[ny][nx] === 1
+            ) {
+              maze[y + dy / 2][x + dx / 2] = 0;
+              maze[ny][nx] = 0;
+              stack.push([nx, ny]);
+            }
+          }
+        }
+
+        // 출구로 가는 경로 보장
+        guaranteePathToExit();
+
+        // 난이도에 따라 추가 경로 생성
+        const additionalPaths = Math.floor(
+          mazeSize * mazeSize * (0.05 + level * 0.01)
+        );
+        for (let i = 0; i < additionalPaths; i++) {
+          let x = Math.floor(Math.random() * (mazeSize - 2)) + 1;
+          let y = Math.floor(Math.random() * (mazeSize - 2)) + 1;
+          if (maze[y][x] === 1 && hasAdjacentPath(x, y)) {
+            maze[y][x] = 0;
+          }
+        }
+      }
+
+      function guaranteePathToExit() {
+        let x = mazeSize - 2,
+          y = mazeSize - 2;
+        while (x > 1 || y > 1) {
+          maze[y][x] = 0;
+          if (x > 1 && y > 1) {
+            Math.random() < 0.5 ? x-- : y--;
+          } else if (x > 1) {
+            x--;
+          } else {
+            y--;
+          }
+        }
+      }
+
+      function hasAdjacentPath(x, y) {
+        return (
+          (maze[y - 1] && maze[y - 1][x] === 0) ||
+          (maze[y + 1] && maze[y + 1][x] === 0) ||
+          maze[y][x - 1] === 0 ||
+          maze[y][x + 1] === 0
+        );
+      }
+
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+      function renderMaze() {
+        document.querySelectorAll(".wall").forEach((wall) => wall.remove());
+
+        for (let y = 0; y < mazeSize; y++) {
+          for (let x = 0; x < mazeSize; x++) {
+            if (maze[y][x] === 1) {
+              const wall = document.createElement("div");
+              wall.className = "wall";
+              wall.style.width = "20px";
+              wall.style.height = "20px";
+              wall.style.left = `${x * 20}px`;
+              wall.style.top = `${y * 20}px`;
+              gameArea.appendChild(wall);
+            }
+          }
+        }
+      }
+
+      function isValidMove(x, y) {
+        const mazeX = Math.floor(x / 20);
+        const mazeY = Math.floor(y / 20);
+        return (
+          mazeX >= 0 &&
+          mazeX < mazeSize &&
+          mazeY >= 0 &&
+          mazeY < mazeSize &&
+          maze[mazeY][mazeX] === 0
+        );
+      }
+
+      function checkWin() {
+        if (playerX === 260 && playerY === 260) {
+          level++;
+          alert(`레벨 ${level - 1} 클리어! 다음 레벨로 이동합니다.`);
+          resetGame();
+        }
+      }
+
+      function resetGame() {
+        generateMaze();
+        renderMaze();
+        playerX = 20;
+        playerY = 20;
+        player.style.left = `${playerX}px`;
+        player.style.top = `${playerY}px`;
+        levelDisplay.textContent = `레벨: ${level}`;
+      }
+
+      document.addEventListener("keydown", (event) => {
+        let newX = playerX;
+        let newY = playerY;
+
+        switch (event.key) {
+          case "ArrowUp":
+            newY -= step;
+            break;
+          case "ArrowDown":
+            newY += step;
+            break;
+          case "ArrowLeft":
+            newX -= step;
+            break;
+          case "ArrowRight":
+            newX += step;
+            break;
+        }
+
+        if (isValidMove(newX, newY)) {
+          playerX = newX;
+          playerY = newY;
+          player.style.left = `${playerX}px`;
+          player.style.top = `${playerY}px`;
+          checkWin();
+        }
+      });
+
+      // 게임 초기화
+      goal.style.left = "260px";
+      goal.style.top = "260px";
+      resetGame();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 100px;
+      }
+
+      .target {
+        width: 50px;
+        height: 50px;
+        background-color: teal;
+        /* transition: 0.2s; */
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="target"></div>
+
+    <script>
+      // 화살표 키를 눌렀을 때, 왼쪽 화살표를 누르면 상자를 왼쪽으로, 오른쪽 화살표를 누르면 상자를 왼쪽으로 이동합니다.
+      const target = document.querySelector(".target");
+
+      let keys = "";
+      let pos = 0;
+
+      function move(event) {
+        keys = event.key;
+      }
+
+      function stop(event) {
+        keys = "";
+      }
+
+      document.addEventListener("keydown", move);
+      document.addEventListener("keyup", stop);
+
+      function play() {
+        const targetPos = target.getBoundingClientRect();
+        if (keys === "ArrowRight") {
+          if (!(targetPos.right + 10 > window.innerWidth)) {
+            pos += 15;
+            target.style.transform = `translateX(${pos}px)`;
+          }
+        }
+
+        if (keys === "ArrowLeft") {
+          if (!(targetPos.left < 0)) {
+            pos -= 15;
+            target.style.transform = `translateX(${pos}px)`;
+          }
+        }
+
+        requestAnimationFrame(play);
+      }
+      requestAnimationFrame(play);
+    </script>
+  </body>
+</html>
