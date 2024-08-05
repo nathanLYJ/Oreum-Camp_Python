@@ -64,6 +64,7 @@
    # Environments
    .env
    .venv
+   venv
    env/
    venv/
    ENV/
@@ -97,3 +98,24 @@
    .Trashes
    ehthumbs.db
    Thumbs.db
+
+# Gradio specific
+   gradio_cached_examples/
+   gradio_data/
+   *.gradio.js
+   *.gradio.css
+
+# Gradio temporary files
+   tmp/
+   temp/
+
+# Gradio logs
+   gradio_logs/
+
+# Gradio generated files
+   flagged/
+
+# Gradio configuration files (if any)
+   gradio_config.json
+
+# Any other Gradio specific files or directories you want to ignore
