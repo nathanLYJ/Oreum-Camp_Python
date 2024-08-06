@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <section>
+      <h2>GET</h2>
+      <form action="http://127.0.0.1:8000" method="get">
+        <label for="username-get">Username:</label>
+        <input
+          type="text"
+          id="username-get"
+          name="username"
+          value="hellopost"
+          title="Enter your username"
+          placeholder="Enter username"
+        />
+        <br />
+        <label for="password-get">Password:</label>
+        <input
+          type="password"
+          id="password-get"
+          name="password"
+          value="worldpost"
+          title="Enter your password"
+          placeholder="Enter password"
+        />
+        <br />
+        <input type="submit" value="Login" />
+      </form>
+    </section>
+    <section>
+      <h2>POST</h2>
+      <form action="http://127.0.0.1:8000" method="post">
+        <label for="username-post">Username:</label>
+        <input
+          type="text"
+          id="username-post"
+          name="username"
+          value="hellopost"
+          title="Enter your username"
+          placeholder="Enter username"
+        />
+        <br />
+        <label for="password-post">Password:</label>
+        <input
+          type="password"
+          id="password-post"
+          name="password"
+          value="worldpost"
+          title="Enter your password"
+          placeholder="Enter password"
+        />
+        <br />
+        <input type="submit" value="Login" />
+      </form>
+    </section>
+  </body>
+</html>
