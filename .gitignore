@@ -119,3 +119,6 @@
    gradio_config.json
 
 # Any other Gradio specific files or directories you want to ignore
+
+# .gitignore
+myenv/
