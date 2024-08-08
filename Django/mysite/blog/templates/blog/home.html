@@ -1,13 +1,15 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <h2>Welcome to My Blog</h2>
-    <h3>Recent Posts</h3>
-    <ul>
-    {% for post in recent_posts %}
-        <li><a href="#">{{ post.title }}</a></li>
-    {% empty %}
-        <li>No posts yet.</li>
-    {% endfor %}
-    </ul>
+    <div class="content-wrapper">
+        <h2>Welcome to My Blog</h2>
+        <h3>Recent Posts</h3>
+        <ul class="post-list">
+        {% for post in recent_posts %}
+            <li><a href="#">{{ post.title }}</a></li>
+        {% empty %}
+            <li>No posts yet.</li>
+        {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

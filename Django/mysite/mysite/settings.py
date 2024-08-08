@@ -52,10 +52,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "mysite.urls"
 
+# settings.py
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],  # 템플릿 디렉토리 명시
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -67,6 +68,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = "mysite.wsgi.application"
 
@@ -122,3 +124,10 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# 로그인 성공 후 이동할 페이지
+LOGIN_REDIRECT_URL = '/'
+# 로그아웃 성공 후 이동할 페이지
+LOGOUT_REDIRECT_URL = '/'
+
+

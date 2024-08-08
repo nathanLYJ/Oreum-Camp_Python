@@ -1,22 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Blog{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <header>
-        <h1><a href="{% url 'home' %}">My Blog</a></h1>
+    <header class="site-header">
+        <nav>
+            <div class="container">
+                <h1><a href="{% url 'home' %}">My Blog</a></h1>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'post_list' %}">All Posts</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'post_create' %}">New Post</a></li>
+                    {% endif %}
+                </ul>
+                <div class="user-auth">
+                    {% if user.is_authenticated %}
+                        <span>Welcome, {{ user.username }}!</span>
+                        <form id="logout-form" action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit">
+                                Logout
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
     </header>
-    <nav>
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'post_list' %}">All Posts</a>
-    </nav>
-    <main>
+
+    <main class="container">
         {% block content %}
         {% endblock %}
     </main>
-    <footer>
-        <p>&copy; 2024 My Blog</p>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2024 My Blog. All rights reserved.</p>
+        </div>
     </footer>
 </body>
 </html>

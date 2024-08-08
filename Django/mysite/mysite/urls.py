@@ -18,11 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('blog.urls')), # blog.urls로 이동
-	# www.example.com/blog/으로 접속하면 blog.urls로 이동
-   ]
+    path('', include('blog.urls')),  # blog.urls로 이동
+    path('accounts/', include('django.contrib.auth.urls')), 
+]
 
 	
