@@ -24,6 +24,9 @@ urlpatterns = [
 	# 포스트 삭제 페이지
 	path('post/<int:pk>/delete/', views.post_delete, name='post_delete'),
 
+	# 카테고리별 포스트 목록 페이지
+	path('category/<slug:category_slug>/', views.category_posts, name='category_posts'),
+
 	# 로그인
 	path('accounts/login/', auth_views.LoginView.as_view(), name='login'), 
 	# 로그아웃

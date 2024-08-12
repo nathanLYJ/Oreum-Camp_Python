@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect 
-from .models import Post
+from .models import Post, Category
 from .forms import PostForm
 from django.contrib.auth.decorators import login_required
 
@@ -40,6 +40,14 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/post_detail.html', {'post': post})
 
+# 카테고리별로 게시글을 보여주는 함수
+def category_posts(request, category_slug):
+    # slug 필드를 이용해 카테고리를 가져옴
+    category = get_object_or_404(Category, slug=category_slug)
+    # 해당 카테고리에 속한 게시글을 가져옴
+    posts = Post.objects.filter(category=category).order_by('-created_date')
+    # 카테고리와 게시글을 category_posts.html 템플릿 파일에 전달
+    return render(request, 'blog/category_posts.html', {'category': category, 'posts': posts}) 
 
 @login_required
 def post_create(request):

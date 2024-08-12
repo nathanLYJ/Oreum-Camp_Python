@@ -122,3 +122,23 @@
 
 # .gitignore
 myenv/
+
+# Virtual environment
+venv/
+env/
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+__pycache__/
+media/
+staticfiles/
+
+# Environment variables
+.env
+
+# IDE / Editor settings
+.vscode/
+.idea/
+
