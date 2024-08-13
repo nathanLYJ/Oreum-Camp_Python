@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}도서 대여 안내{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>도서 대여 안내</h2>
+    <p>도서 대여에 관한 정보를 제공합니다. 도서 대여 절차, 이용 시간, 기타 규칙 등을 안내합니다.</p>
+</div>
+<a href="{% url 'books:book_rental' %}" class="btn btn-success mb-4">약관 동의</a>
+{% endblock %}
