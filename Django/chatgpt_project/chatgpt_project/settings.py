@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -122,3 +124,17 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+load_dotenv()
+
+# 환경변수에서 API 키를 가져옴
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+# 올바르게 로드되었는지 확인
+if OPENAI_API_KEY:
+    print("API key loaded successfully")
+else:
+    print("API key not found")
+
+# 로그인 후 리디렉션할 URL 설정
+LOGIN_REDIRECT_URL = '/'

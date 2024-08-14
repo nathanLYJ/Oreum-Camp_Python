@@ -1,0 +1,24 @@
+{% extends 'chat/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block header %}
+    <h2>ChatGPT 서비스에 오신 것을 환영합니다</h2>
+{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+        {% if user.is_authenticated %}
+            <p>환영합니다, {{ user.username }}! 이제 ChatGPT 서비스 사용가능합니다. <a href="{% url 'chat' %}">ChatGPT service</a>.</p>
+
+            <!-- 로그아웃 버튼을 POST 요청으로 처리 -->
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary mt-3">로그아웃</button>
+            </form>
+        {% else %}
+            <p>당신은 <a href="{% url 'login' %}">로그인</a>해야 ChatGPT service 사용가능합니다.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary mt-3">로그인</a>
+        {% endif %}
+    </div>
+{% endblock %}
