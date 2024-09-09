@@ -1,0 +1,71 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "generic",
+    "collectionId": "83b9ee5e-a6ee-467b-8dc9-ed3e62d093f7",
+    "dateExported": "2024-09-06T02:18:08.936Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "aeaea5e3-50df-468c-974f-4e29aa228b72",
+            "colId": "83b9ee5e-a6ee-467b-8dc9-ed3e62d093f7",
+            "containerId": "",
+            "name": "Read",
+            "url": "http://127.0.0.1:8000/books/",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-09-06T02:09:02.809Z",
+            "modified": "2024-09-06T02:10:40.408Z",
+            "headers": []
+        },
+        {
+            "_id": "bfb07bb7-0cf1-4662-a19a-a24490baf642",
+            "colId": "83b9ee5e-a6ee-467b-8dc9-ed3e62d093f7",
+            "containerId": "",
+            "name": "Read 2page",
+            "url": "http://127.0.0.1:8000/books/?page=2",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-09-06T02:12:50.993Z",
+            "modified": "2024-09-06T02:13:34.610Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "page",
+                    "value": "2",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "5f24d44d-fe8c-4452-80b3-9a809139a71e",
+            "colId": "83b9ee5e-a6ee-467b-8dc9-ed3e62d093f7",
+            "containerId": "",
+            "name": "Create",
+            "url": "http://127.0.0.1:8000/books/create/",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2024-09-06T02:14:24.754Z",
+            "modified": "2024-09-06T02:17:19.339Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"title\": \"test123123\",\n  \"author\": \"test123123\",\n  \"publication_date\": \"2030-09-09\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "5c156428-a2c2-43af-9f74-2cfe0b0d6f2f",
+            "colId": "83b9ee5e-a6ee-467b-8dc9-ed3e62d093f7",
+            "containerId": "",
+            "name": "Detail Read",
+            "url": "http://127.0.0.1:8000/books/1",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2024-09-06T02:17:34.482Z",
+            "modified": "2024-09-06T02:17:59.512Z",
+            "headers": []
+        }
+    ],
+    "ref": "_nJQzcOiXxG-SbKRhwbU6HRIZic-g1AwZ-NMRRZoGxPORzxsEKWQejQPjawh4oCwWbBzdBHY3aRFlo28-UkqGQ"
+}
